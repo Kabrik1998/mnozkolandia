@@ -42,6 +42,12 @@ body {
   transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
 }
 
+.btn.compact {
+  font-size: 0.92rem;
+  min-height: 44px;
+  padding: 0.65rem 0.95rem;
+}
+
 .btn:hover,
 .mode-card:hover {
   filter: saturate(1.06);
@@ -178,19 +184,27 @@ body {
 }
 
 .keypad button {
+  align-items: center;
   background: #fff7df;
   border: 0;
   border-radius: 22px;
   box-shadow: 0 7px 0 rgba(214, 163, 47, 0.28);
   color: #17324d;
+  display: flex;
   font-size: 2rem;
   font-weight: 900;
+  justify-content: center;
   min-height: 68px;
 }
 
 .keypad .ok {
   background: #2cc7b8;
   color: white;
+}
+
+.keypad .ok svg {
+  height: 34px;
+  width: 34px;
 }
 
 .stat {
@@ -508,6 +522,99 @@ body {
 }
 
 @media (max-width: 760px) {
+  .logo-title {
+    font-size: clamp(2rem, 9vw, 2.35rem);
+  }
+
+  .start-copy {
+    font-size: 1.05rem;
+    max-width: 21rem;
+  }
+
+  .btn {
+    font-size: 0.94rem;
+    min-height: 46px;
+    padding: 0.68rem 0.9rem;
+  }
+
+  .btn.compact {
+    font-size: 0.86rem;
+    min-height: 40px;
+    padding: 0.55rem 0.75rem;
+  }
+
+  .mode-card {
+    border-radius: 22px;
+    gap: 0.85rem;
+    min-height: 118px;
+    padding: 1rem;
+  }
+
+  .mode-card strong {
+    font-size: 1.35rem;
+  }
+
+  .mode-card small {
+    font-size: 0.92rem;
+  }
+
+  .mode-icon {
+    border-radius: 18px;
+    flex-basis: 58px;
+    height: 58px;
+  }
+
+  .game-panel,
+  .side-panel,
+  .falling-panel {
+    border-radius: 24px;
+    padding: 1rem;
+  }
+
+  .problem {
+    font-size: clamp(3rem, 18vw, 4.6rem);
+  }
+
+  .answer-input {
+    border-radius: 20px;
+    font-size: 2.25rem;
+    min-height: 54px;
+    max-width: 180px;
+  }
+
+  .keypad {
+    gap: 0.55rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 320px;
+    width: 100%;
+  }
+
+  .keypad button {
+    border-radius: 18px;
+    font-size: 1.55rem;
+    min-height: 54px;
+  }
+
+  .keypad .ok svg {
+    height: 30px;
+    width: 30px;
+  }
+
+  .stat {
+    min-width: 76px;
+    padding: 0.45rem 0.6rem;
+  }
+
+  .stat strong {
+    font-size: 1.1rem;
+  }
+
+  .toast {
+    font-size: 1rem;
+    min-height: 40px;
+    padding: 0.45rem 0.85rem;
+  }
+
   .memory-grid {
     grid-template-columns: repeat(4, minmax(62px, 1fr));
   }

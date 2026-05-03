@@ -19,7 +19,7 @@ function makeBalls(problem) {
   }));
 }
 
-export default function FallingBalls({ nick, onMenu, onSave }) {
+export default function FallingBalls({ nick, onMenu, onSave, onChangeStudent }) {
   const [problem, setProblem] = useState(() => newProblem());
   const [points, setPoints] = useState(0);
   const [streak, setStreak] = useState(0);
@@ -85,6 +85,7 @@ export default function FallingBalls({ nick, onMenu, onSave }) {
         mascotMood={mood}
         onMenu={onMenu}
         onRestart={restart}
+        onChangeStudent={onChangeStudent}
         stats={<><Stat label="Punkty" value={points} tone="yellow" /><Stat label="Passa" value={`🔥 x${streak}`} /><Stat label="Czas" value={`${timeLeft}s`} /></>}
       />
       <section className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[1fr_330px]">
@@ -121,4 +122,3 @@ export default function FallingBalls({ nick, onMenu, onSave }) {
     </>
   );
 }
-

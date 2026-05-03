@@ -32,7 +32,7 @@ function makeDeck() {
   ]));
 }
 
-export default function MemoryGame({ nick, onMenu, onSave }) {
+export default function MemoryGame({ nick, onMenu, onSave, onChangeStudent }) {
   const initialDeck = useMemo(makeDeck, []);
   const [deck, setDeck] = useState(initialDeck);
   const [isChecking, setIsChecking] = useState(false);
@@ -114,6 +114,7 @@ export default function MemoryGame({ nick, onMenu, onSave }) {
         mascotMood={mood}
         onMenu={onMenu}
         onRestart={restart}
+        onChangeStudent={onChangeStudent}
         stats={<><Stat label="Punkty" value={points} tone="yellow" /><Stat label="Ruchy" value={moves} /><Stat label="Czas" value={formatTime(seconds)} /></>}
       />
       <section className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[1fr_330px]">

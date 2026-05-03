@@ -37,16 +37,22 @@ export default function App() {
     setScores([]);
   }
 
+  function changeStudent() {
+    localStorage.removeItem('mnozkolandia-nick');
+    setNick('');
+    setError('');
+    setScreen('start');
+  }
+
   return (
     <Shell>
       {screen === 'start' && <StartScreen nick={nick} setNick={setNick} error={error} onStart={start} onRanking={() => setScreen('ranking')} onHelp={() => setScreen('help')} />}
-      {screen === 'menu' && <ModeMenu nick={nick} onSelect={(id) => setScreen(id)} />}
+      {screen === 'menu' && <ModeMenu nick={nick} onSelect={(id) => setScreen(id)} onChangeStudent={changeStudent} />}
       {screen === 'ranking' && <Ranking scores={sortedScores} onBack={() => setScreen(nick.trim() ? 'menu' : 'start')} onClear={handleClear} />}
       {screen === 'help' && <Help onBack={() => setScreen('start')} />}
-      {screen === 'quick' && <QuickMultiply nick={nick} onMenu={() => setScreen('menu')} onSave={handleSave} />}
-      {screen === 'memory' && <MemoryGame nick={nick} onMenu={() => setScreen('menu')} onSave={handleSave} />}
-      {screen === 'falling' && <FallingBalls nick={nick} onMenu={() => setScreen('menu')} onSave={handleSave} />}
+      {screen === 'quick' && <QuickMultiply nick={nick} onMenu={() => setScreen('menu')} onSave={handleSave} onChangeStudent={changeStudent} />}
+      {screen === 'memory' && <MemoryGame nick={nick} onMenu={() => setScreen('menu')} onSave={handleSave} onChangeStudent={changeStudent} />}
+      {screen === 'falling' && <FallingBalls nick={nick} onMenu={() => setScreen('menu')} onSave={handleSave} onChangeStudent={changeStudent} />}
     </Shell>
   );
 }
-

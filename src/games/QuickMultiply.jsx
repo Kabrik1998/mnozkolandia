@@ -6,7 +6,7 @@ import { MODES, formatTime, newProblem, nowLabel, pickMessage, scoreWithStreak }
 
 const keys = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0'];
 
-export default function QuickMultiply({ nick, onMenu, onSave }) {
+export default function QuickMultiply({ nick, onMenu, onSave, onChangeStudent }) {
   const [problem, setProblem] = useState(() => newProblem());
   const [answer, setAnswer] = useState('');
   const [points, setPoints] = useState(0);
@@ -68,6 +68,7 @@ export default function QuickMultiply({ nick, onMenu, onSave }) {
         mascotMood={mood}
         onMenu={onMenu}
         onRestart={restart}
+        onChangeStudent={onChangeStudent}
         stats={<><Stat label="Punkty" value={points} tone="yellow" /><Stat label="Passa" value={`🔥 x${streak}`} /><Stat label="Czas" value={formatTime(seconds)} /></>}
       />
       <section className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[1fr_360px]">
@@ -100,4 +101,3 @@ export default function QuickMultiply({ nick, onMenu, onSave }) {
     </>
   );
 }
-

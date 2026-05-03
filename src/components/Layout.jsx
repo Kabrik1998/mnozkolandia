@@ -1,13 +1,13 @@
-import { ArrowLeft, RotateCcw } from 'lucide-react';
+import { ArrowLeft, RotateCcw, UserRound } from 'lucide-react';
 import Mascot from './Mascot.jsx';
 
 export function Shell({ children }) {
-  return <main className="min-h-screen overflow-hidden bg-game px-4 py-5 text-ink sm:px-6 lg:px-8">{children}</main>;
+  return <main className="min-h-screen overflow-hidden bg-game px-3 py-3 text-ink sm:px-6 sm:py-5 lg:px-8">{children}</main>;
 }
 
-export function GameHeader({ title, nick, mascotMood, onMenu, onRestart, stats }) {
+export function GameHeader({ title, nick, mascotMood, onMenu, onRestart, onChangeStudent, stats }) {
   return (
-    <header className="mx-auto mb-4 flex max-w-6xl flex-wrap items-center justify-between gap-3 rounded-[28px] bg-white/72 p-3 shadow-soft backdrop-blur">
+    <header className="mx-auto mb-3 flex max-w-6xl flex-wrap items-center justify-between gap-3 rounded-[24px] bg-white/72 p-2 shadow-soft backdrop-blur sm:mb-4 sm:rounded-[28px] sm:p-3">
       <div className="flex items-center gap-3">
         <Mascot mood={mascotMood} size="small" />
         <div>
@@ -18,6 +18,7 @@ export function GameHeader({ title, nick, mascotMood, onMenu, onRestart, stats }
       </div>
       <div className="flex flex-wrap items-center justify-end gap-2">
         {stats}
+        {onChangeStudent && <button className="btn compact ghost" onClick={onChangeStudent}><UserRound size={18} /> Zmień ucznia</button>}
         <button className="btn secondary" onClick={onRestart}><RotateCcw size={20} /> Restart</button>
         <button className="btn ghost" onClick={onMenu}><ArrowLeft size={20} /> Menu</button>
       </div>
@@ -33,4 +34,3 @@ export function Toast({ children, tone = 'good' }) {
   if (!children) return null;
   return <div className={`toast ${tone === 'bad' ? 'toast-bad' : 'toast-good'}`}>{children}</div>;
 }
-
