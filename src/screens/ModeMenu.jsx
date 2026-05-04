@@ -12,7 +12,7 @@ export default function ModeMenu({ t, nick, onSelect, onChangeStudent }) {
   return (
     <section className="mx-auto max-w-6xl py-3 sm:py-6">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3 sm:mb-8 sm:gap-5">
-        <div>
+        <div className="menu-heading">
           <p className="text-lg font-black text-teal-700">{t.welcome}, {nick}!</p>
           <h1 className="text-4xl font-black sm:text-6xl">{t.chooseAdventure}</h1>
         </div>

@@ -31,6 +31,6 @@ export function Stat({ label, value, tone = 'white' }) {
 }
 
 export function Toast({ children, tone = 'good' }) {
-  if (!children) return null;
+  if (!children) return <div className="toast toast-empty" aria-hidden="true">&nbsp;</div>;
   return <div className={`toast ${tone === 'bad' ? 'toast-bad' : 'toast-good'}`}>{children}</div>;
 }
