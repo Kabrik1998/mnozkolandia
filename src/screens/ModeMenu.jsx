@@ -1,23 +1,23 @@
 import { Brain, CircleDot, Keyboard, Trophy, UserRound } from 'lucide-react';
 import Mascot from '../components/Mascot.jsx';
 
-const modes = [
-  { id: 'quick', title: 'Szybkie mnożenie', icon: Keyboard, color: 'tile-teal', desc: 'Wpisuj wyniki, buduj passę i zdobywaj bonusy.' },
-  { id: 'memory', title: 'Memory', icon: Brain, color: 'tile-yellow', desc: 'Dopasuj działanie do wyniku i odkryj wszystkie pary.' },
-  { id: 'falling', title: 'Spadające kulki', icon: CircleDot, color: 'tile-coral', desc: 'Klikaj kulkę z poprawnym wynikiem, zanim opadnie.' },
-  { id: 'ranking', title: 'Ranking', icon: Trophy, color: 'tile-lilac', desc: 'Zobacz najlepsze wyniki zapisane w tej przeglądarce.' }
-];
+export default function ModeMenu({ t, nick, onSelect, onChangeStudent }) {
+  const modes = [
+    { id: 'quick', title: t.quick, icon: Keyboard, color: 'tile-teal', desc: t.quickDesc },
+    { id: 'memory', title: t.memory, icon: Brain, color: 'tile-yellow', desc: t.memoryDesc },
+    { id: 'falling', title: t.falling, icon: CircleDot, color: 'tile-coral', desc: t.fallingDesc },
+    { id: 'ranking', title: t.ranking, icon: Trophy, color: 'tile-lilac', desc: t.rankingDesc }
+  ];
 
-export default function ModeMenu({ nick, onSelect, onChangeStudent }) {
   return (
     <section className="mx-auto max-w-6xl py-3 sm:py-6">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3 sm:mb-8 sm:gap-5">
         <div>
-          <p className="text-lg font-black text-teal-700">Witaj, {nick}!</p>
-          <h1 className="text-4xl font-black sm:text-6xl">Wybierz przygodę z mnożeniem</h1>
+          <p className="text-lg font-black text-teal-700">{t.welcome}, {nick}!</p>
+          <h1 className="text-4xl font-black sm:text-6xl">{t.chooseAdventure}</h1>
         </div>
         <div className="flex items-center gap-2">
-          <button className="btn compact ghost" onClick={onChangeStudent}><UserRound size={18} /> Zmień ucznia</button>
+          <button className="btn compact ghost" onClick={onChangeStudent}><UserRound size={18} /> {t.changePlayer}</button>
           <Mascot mood="happy" size="small" />
         </div>
       </div>

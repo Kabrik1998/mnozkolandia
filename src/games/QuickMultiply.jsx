@@ -2,18 +2,28 @@ import { useEffect, useState } from 'react';
 import { Check } from 'lucide-react';
 import { GameHeader, Stat, Toast } from '../components/Layout.jsx';
 import Mascot from '../components/Mascot.jsx';
-import { MODES, formatTime, newProblem, nowLabel, pickMessage, randomInt, scoreWithStreak } from '../utils/game.js';
+import { MODES, formatTime, newProblem, nowLabel, randomInt, scoreWithStreak } from '../utils/game.js';
 
 const keys = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0'];
 
 const DIFFICULTIES = {
-  easy: { label: 'łatwy', title: 'Łatwy', desc: 'Klasyczna tabliczka mnożenia 2-10.' },
-  medium: { label: 'średni', title: 'Średni', desc: 'Częściej pojawiają się liczby 6, 7, 8 i 9.' },
-  hard: { label: 'trudny', title: 'Trudny', desc: 'Trudniejsze mnożenie oraz dzielenie z wynikiem całkowitym.' }
+  easy: { label: 'łatwy', titleKey: 'easy' },
+  medium: { label: 'średni', titleKey: 'medium' },
+  hard: { label: 'trudny', titleKey: 'hard' }
 };
 
 const mediumPool = [2, 3, 4, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10];
 const hardPool = [6, 6, 7, 7, 8, 8, 9, 9, 2, 3, 4, 5, 10];
+
+function goodMessage(t) {
+  const messages = [t.wellDone, t.super, t.fast, t.master, t.greatStreak];
+  return messages[randomInt(0, messages.length - 1)];
+}
+
+function softMessage(t) {
+  const messages = [t.tryAgain, t.almost];
+  return messages[randomInt(0, messages.length - 1)];
+}
 
 function pickFrom(pool) {
   return pool[randomInt(0, pool.length - 1)];
@@ -44,7 +54,7 @@ function makeProblem(level) {
   return { a: answer * divisor, b: divisor, promptA: answer * divisor, promptB: divisor, operator: '÷', answer };
 }
 
-export default function QuickMultiply({ nick, onMenu, onSave, onChangeStudent }) {
+export default function QuickMultiply({ t, nick, onMenu, onSave, onChangeStudent }) {
   const [difficulty, setDifficulty] = useState(null);
   const [problem, setProblem] = useState(null);
   const [answer, setAnswer] = useState('');
@@ -83,13 +93,13 @@ export default function QuickMultiply({ nick, onMenu, onSave, onChangeStudent })
       setPoints((current) => scoreWithStreak(current, streak));
       setStreak(nextStreak);
       setCorrect((count) => count + 1);
-      setMessage(nextStreak >= 5 ? 'Świetna passa!' : pickMessage('good'));
+      setMessage(nextStreak >= 5 ? t.greatStreak : goodMessage(t));
       setMood(nextStreak >= 5 ? 'excited' : 'happy');
     } else {
       setPoints((current) => Math.max(0, current - 5));
       setStreak(0);
       setWrong((count) => count + 1);
-      setMessage(pickMessage('soft'));
+      setMessage(softMessage(t));
       setMood('sad');
     }
     setAnswer('');
@@ -118,25 +128,23 @@ export default function QuickMultiply({ nick, onMenu, onSave, onChangeStudent })
   return (
     <>
       <GameHeader
-        title={difficulty ? `Szybkie mnożenie — ${DIFFICULTIES[difficulty].title}` : 'Szybkie mnożenie'}
+        title={difficulty ? `${t.quick} — ${t[DIFFICULTIES[difficulty].titleKey]}` : t.quick}
         nick={nick}
         mascotMood={mood}
         onMenu={onMenu}
         onRestart={restart}
         onChangeStudent={onChangeStudent}
-        stats={<><Stat label="Punkty" value={points} tone="yellow" /><Stat label="Passa" value={`🔥 x${streak}`} /><Stat label="Czas" value={formatTime(seconds)} /></>}
+        t={t}
+        stats={<><Stat label={t.points} value={points} tone="yellow" /><Stat label={t.streak} value={`🔥 x${streak}`} /><Stat label={t.time} value={formatTime(seconds)} /></>}
       />
       {!difficulty ? (
         <section className="mx-auto max-w-6xl">
           <div className="game-panel text-center">
-            <Toast>Wybierz poziom i zaczynamy!</Toast>
+            <Toast>{t.chooseLevel}</Toast>
             <div className="grid gap-3 md:grid-cols-3 md:gap-5">
               {Object.entries(DIFFICULTIES).map(([level, item]) => (
-                <button key={level} className="mode-card tile-teal" onClick={() => startDifficulty(level)}>
-                  <span className="text-left">
-                    <strong>{item.title}</strong>
-                    <small>{item.desc}</small>
-                  </span>
+                <button key={level} className="level-card tile-teal" onClick={() => startDifficulty(level)}>
+                  <strong>{t[item.titleKey]}</strong>
                 </button>
               ))}
             </div>
@@ -160,13 +168,13 @@ export default function QuickMultiply({ nick, onMenu, onSave, onChangeStudent })
               <button onClick={() => setAnswer((value) => value.slice(0, -1))}>⌫</button>
               <button className="ok" onClick={submit}><Check size={26} /></button>
             </div>
-            <button className="btn danger mt-6" onClick={finish}>Zakończ grę</button>
+            <button className="btn danger mt-6" onClick={finish}>{t.finishGame}</button>
           </div>
           <aside className="side-panel">
             <Mascot mood={mood} />
             <div className="grid grid-cols-2 gap-3">
-              <Stat label="Poprawne" value={correct} tone="teal" />
-              <Stat label="Błędy" value={wrong} tone="coral" />
+              <Stat label={t.correct} value={correct} tone="teal" />
+              <Stat label={t.mistakes} value={wrong} tone="coral" />
             </div>
           </aside>
         </section>

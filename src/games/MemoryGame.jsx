@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { GameHeader, Stat, Toast } from '../components/Layout.jsx';
 import Mascot from '../components/Mascot.jsx';
-import { MODES, formatTime, newProblem, nowLabel, pickMessage, shuffle } from '../utils/game.js';
+import { MODES, formatTime, newProblem, nowLabel, randomInt, shuffle } from '../utils/game.js';
 
 function makeDeck() {
   const unique = [];
@@ -32,7 +32,12 @@ function makeDeck() {
   ]));
 }
 
-export default function MemoryGame({ nick, onMenu, onSave, onChangeStudent }) {
+function goodMessage(t) {
+  const messages = [t.wellDone, t.super, t.fast, t.master, t.greatStreak];
+  return messages[randomInt(0, messages.length - 1)];
+}
+
+export default function MemoryGame({ t, nick, onMenu, onSave, onChangeStudent }) {
   const initialDeck = useMemo(makeDeck, []);
   const [deck, setDeck] = useState(initialDeck);
   const [isChecking, setIsChecking] = useState(false);
@@ -57,9 +62,9 @@ export default function MemoryGame({ nick, onMenu, onSave, onChangeStudent }) {
     onSave({ id: crypto.randomUUID(), nick, points: finalPoints, mode: MODES.memory, date: nowLabel(), meta: { seconds, moves } });
     setSaved(true);
     setPoints(finalPoints);
-    setMessage('Brawo! Ukończyłeś Memory!');
+    setMessage(t.memoryDone);
     setMood('excited');
-  }, [done, saved, points, seconds, moves, nick, onSave]);
+  }, [done, saved, points, seconds, moves, nick, onSave, t.memoryDone]);
 
   function flip(card) {
     if (isChecking || done || card.isMatched || card.isFlipped) return;
@@ -80,14 +85,14 @@ export default function MemoryGame({ nick, onMenu, onSave, onChangeStudent }) {
       setTimeout(() => {
         setDeck((cards) => cards.map((item) => item.id === first.id || item.id === second.id ? { ...item, isMatched: true } : item));
         setPoints((score) => score + 15);
-        setMessage(pickMessage('good'));
+        setMessage(goodMessage(t));
         setMood('happy');
         setIsChecking(false);
       }, 360);
       return;
     }
 
-    setMessage('Prawie dobrze!');
+    setMessage(t.almost);
     setMood('sad');
     setTimeout(() => {
       setDeck((cards) => cards.map((item) => item.id === first.id || item.id === second.id ? { ...item, isFlipped: false } : item));
@@ -109,13 +114,14 @@ export default function MemoryGame({ nick, onMenu, onSave, onChangeStudent }) {
   return (
     <>
       <GameHeader
-        title="Memory"
+        title={t.memory}
         nick={nick}
         mascotMood={mood}
         onMenu={onMenu}
         onRestart={restart}
         onChangeStudent={onChangeStudent}
-        stats={<><Stat label="Punkty" value={points} tone="yellow" /><Stat label="Ruchy" value={moves} /><Stat label="Czas" value={formatTime(seconds)} /></>}
+        t={t}
+        stats={<><Stat label={t.points} value={points} tone="yellow" /><Stat label={t.moves} value={moves} /><Stat label={t.time} value={formatTime(seconds)} /></>}
       />
       <section className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[1fr_330px]">
         <div className="game-panel memory-panel">
@@ -123,18 +129,18 @@ export default function MemoryGame({ nick, onMenu, onSave, onChangeStudent }) {
           <MemoryBoard cards={deck} isChecking={isChecking} onFlip={flip} />
           {done && (
             <div className="memory-finish">
-              <h2>Brawo! Ukończyłeś Memory!</h2>
-              <p>Czas: {formatTime(seconds)}</p>
-              <p>Ruchy: {moves}</p>
-              <p>Punkty: {points}</p>
-              <button className="btn primary" onClick={restart}>Zagraj ponownie</button>
+              <h2>{t.memoryDone}</h2>
+              <p>{t.time}: {formatTime(seconds)}</p>
+              <p>{t.moves}: {moves}</p>
+              <p>{t.points}: {points}</p>
+              <button className="btn primary" onClick={restart}>{t.playAgain}</button>
             </div>
           )}
         </div>
         <aside className="side-panel">
           <Mascot mood={mood} />
           <p className="rounded-3xl bg-white/70 p-4 text-center text-lg font-black text-slate-600">
-            Odkryto {matchedCount / 2} z {deck.length / 2} par
+            {t.pairsFound} {matchedCount / 2} {t.ofPairs} {deck.length / 2}
           </p>
         </aside>
       </section>
@@ -160,7 +166,7 @@ function MemoryCard({ card, disabled, onClick }) {
       className={`memory-card ${card.isFlipped ? 'is-open' : ''} ${card.isMatched ? 'is-matched' : ''}`}
       disabled={!canClick}
       onClick={onClick}
-      aria-label={card.isFlipped ? `Karta ${card.value}` : 'Zakryta karta'}
+      aria-label={card.isFlipped ? `Card ${card.value}` : 'Card'}
     >
       <span>{card.isFlipped || card.isMatched ? card.value : '?'}</span>
     </button>

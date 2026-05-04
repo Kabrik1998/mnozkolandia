@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { GameHeader, Stat, Toast } from '../components/Layout.jsx';
 import Mascot from '../components/Mascot.jsx';
-import { MODES, newProblem, nowLabel, pickMessage, randomInt, shuffle } from '../utils/game.js';
+import { MODES, newProblem, nowLabel, randomInt, shuffle } from '../utils/game.js';
 
-const GAME_TIME = 180;
+const GAME_TIME = 120;
 
 function fallDuration(elapsedSeconds, speedOffset = 0) {
   if (elapsedSeconds <= 30) return 12 + speedOffset;
-  const progress = Math.min(1, (elapsedSeconds - 30) / 150);
-  return Math.max(6, 12 - progress * 5 + speedOffset);
+  const progress = Math.min(1, (elapsedSeconds - 30) / 90);
+  return Math.max(4.6, 12 - progress * 7.2 + speedOffset * 0.7);
 }
 
 function makeBalls(problem) {
@@ -25,7 +25,12 @@ function makeBalls(problem) {
   }));
 }
 
-export default function FallingBalls({ nick, onMenu, onSave, onChangeStudent }) {
+function goodMessage(t) {
+  const messages = [t.wellDone, t.super, t.fast, t.master, t.greatStreak];
+  return messages[randomInt(0, messages.length - 1)];
+}
+
+export default function FallingBalls({ t, nick, onMenu, onSave, onChangeStudent }) {
   const [problem, setProblem] = useState(() => newProblem());
   const [points, setPoints] = useState(0);
   const [streak, setStreak] = useState(0);
@@ -54,7 +59,7 @@ export default function FallingBalls({ nick, onMenu, onSave, onChangeStudent }) 
     if (!finished) return;
     onSave({ id: crypto.randomUUID(), nick, points, mode: MODES.falling, date: nowLabel(), meta: { timeLeft } });
     setMood('excited');
-    setMessage(points > 80 ? 'Jesteś mistrzem mnożenia!' : 'Super!');
+    setMessage(points > 80 ? t.master : t.super);
   }, [finished]);
 
   function choose(ball) {
@@ -63,13 +68,13 @@ export default function FallingBalls({ nick, onMenu, onSave, onChangeStudent }) 
       const nextStreak = streak + 1;
       setPoints((score) => score + 10 + (nextStreak >= 5 ? 10 : nextStreak >= 3 ? 5 : 0));
       setStreak(nextStreak);
-      setMessage(nextStreak >= 3 ? 'Świetna passa!' : pickMessage('good'));
+      setMessage(nextStreak >= 3 ? t.greatStreak : goodMessage(t));
       setMood(nextStreak >= 5 ? 'excited' : 'happy');
       setProblem(newProblem());
     } else {
       setPoints((score) => Math.max(0, score - 5));
       setStreak(0);
-      setMessage('To nie ta kulka!');
+      setMessage(t.notThisBall);
       setMood('sad');
     }
   }
@@ -87,13 +92,14 @@ export default function FallingBalls({ nick, onMenu, onSave, onChangeStudent }) 
   return (
     <>
       <GameHeader
-        title="Spadające kulki"
+        title={t.falling}
         nick={nick}
         mascotMood={mood}
         onMenu={onMenu}
         onRestart={restart}
         onChangeStudent={onChangeStudent}
-        stats={<><Stat label="Punkty" value={points} tone="yellow" /><Stat label="Passa" value={`🔥 x${streak}`} /><Stat label="Czas" value={`${timeLeft}s`} /></>}
+        t={t}
+        stats={<><Stat label={t.points} value={points} tone="yellow" /><Stat label={t.streak} value={`🔥 x${streak}`} /><Stat label={t.time} value={`${timeLeft}s`} /></>}
       />
       <section className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[1fr_330px]">
         <div className="falling-panel">
@@ -112,9 +118,9 @@ export default function FallingBalls({ nick, onMenu, onSave, onChangeStudent }) 
             ))}
             {finished && (
               <div className="finish-overlay">
-                <h2>Koniec rundy!</h2>
-                <p>Twój wynik: {points} punktów</p>
-                <button className="btn primary" onClick={restart}>Zagraj ponownie</button>
+                <h2>{t.gameOver}</h2>
+                <p>{t.yourScore}: {points} {t.points.toLowerCase()}</p>
+                <button className="btn primary" onClick={restart}>{t.playAgain}</button>
               </div>
             )}
           </div>
@@ -122,7 +128,7 @@ export default function FallingBalls({ nick, onMenu, onSave, onChangeStudent }) 
         <aside className="side-panel">
           <Mascot mood={mood} />
           <p className="rounded-3xl bg-white/70 p-4 text-center text-lg font-black text-slate-600">
-            Kliknij kulkę z poprawnym wynikiem.
+            {t.clickCorrectBall}
           </p>
         </aside>
       </section>
