@@ -20,8 +20,8 @@ export default function StartScreen({ t, lang, onLangChange, user, onLogin, onRe
   }
 
   return (
-    <section className="mx-auto grid min-h-[calc(100vh-40px)] max-w-6xl items-center gap-8 lg:grid-cols-[1fr_1.05fr]">
-      <div className="min-w-0 text-center lg:text-left">
+    <section className="start-shell mx-auto grid min-h-[calc(100vh-40px)] max-w-6xl items-center gap-8 lg:grid-cols-[1fr_1.05fr]">
+      <div className="start-content min-w-0 text-center lg:text-left">
         <div className="start-topbar mb-4 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
           <div className="language-switch">
             <button className={lang === 'pl' ? 'is-active' : ''} onClick={() => onLangChange('pl')}>Polski</button>
@@ -72,7 +72,7 @@ export default function StartScreen({ t, lang, onLangChange, user, onLogin, onRe
           </div>
         </div>
       </div>
-      <div className="flex min-w-0 justify-center">
+      <div className="mascot-stage flex min-w-0 justify-center">
         <Mascot mood="neutral" />
       </div>
     </section>
