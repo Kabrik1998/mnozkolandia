@@ -3,18 +3,24 @@ import { GameHeader, Stat, Toast } from '../components/Layout.jsx';
 import Mascot from '../components/Mascot.jsx';
 import { MODES, newProblem, nowLabel, pickMessage, randomInt, shuffle } from '../utils/game.js';
 
-const GAME_TIME = 60;
+const GAME_TIME = 180;
+
+function fallDuration(elapsedSeconds, speedOffset = 0) {
+  if (elapsedSeconds <= 30) return 12 + speedOffset;
+  const progress = Math.min(1, (elapsedSeconds - 30) / 150);
+  return Math.max(6, 12 - progress * 5 + speedOffset);
+}
 
 function makeBalls(problem) {
   const answers = new Set([problem.answer]);
   while (answers.size < 6) answers.add(Math.max(1, problem.answer + randomInt(-18, 18)));
   return shuffle([...answers]).map((value, index) => ({
-    id: `${Date.now()}-${index}-${value}`,
+    id: `${problem.a}-${problem.b}-${index}-${value}`,
     value,
     correct: value === problem.answer,
     left: 8 + index * 15 + randomInt(-4, 4),
     delay: index * 0.25,
-    duration: randomInt(9, 13),
+    speedOffset: (index % 3) * 0.7,
     color: ['ball-teal', 'ball-yellow', 'ball-coral', 'ball-lilac', 'ball-blue', 'ball-mint'][index]
   }));
 }
@@ -27,6 +33,7 @@ export default function FallingBalls({ nick, onMenu, onSave, onChangeStudent }) 
   const [message, setMessage] = useState('');
   const [mood, setMood] = useState('neutral');
   const [finished, setFinished] = useState(false);
+  const elapsedSeconds = GAME_TIME - timeLeft;
   const balls = useMemo(() => makeBalls(problem), [problem]);
 
   useEffect(() => {
@@ -97,7 +104,7 @@ export default function FallingBalls({ nick, onMenu, onSave, onChangeStudent }) 
               <button
                 key={ball.id}
                 className={`falling-ball ${ball.color}`}
-                style={{ left: `${ball.left}%`, animationDelay: `${ball.delay}s`, animationDuration: `${ball.duration}s` }}
+                style={{ left: `${ball.left}%`, animationDelay: `${ball.delay}s`, animationDuration: `${fallDuration(elapsedSeconds, ball.speedOffset)}s` }}
                 onClick={() => choose(ball)}
               >
                 {ball.value}

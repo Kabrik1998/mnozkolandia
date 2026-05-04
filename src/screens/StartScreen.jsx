@@ -11,7 +11,7 @@ export default function StartScreen({ nick, setNick, onStart, onRanking, onHelp,
           Ćwicz tabliczkę mnożenia z Mnożkiem, zbieraj punkty i bij swoje rekordy.
         </p>
         <div className="mt-7 rounded-[30px] bg-white/78 p-4 shadow-soft backdrop-blur sm:p-6">
-          <label className="mb-2 block text-left text-lg font-black" htmlFor="nick">Nick dziecka</label>
+          <label className="mb-2 block text-left text-lg font-black" htmlFor="nick">Nick</label>
           <input
             id="nick"
             className="input"
