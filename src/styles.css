@@ -42,7 +42,7 @@ body {
   }
 
   .start-eyebrow {
-    transform: translateX(186px);
+    transform: none;
   }
 }
 
