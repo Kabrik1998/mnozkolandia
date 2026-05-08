@@ -17,9 +17,6 @@ export default function StartScreen({ t, lang, onLangChange, nick, setNick, onSt
           {t.startCopy}
         </p>
         <div className="start-card mt-7 rounded-[30px] bg-white/78 p-4 shadow-soft backdrop-blur sm:p-6">
-          <div className="guest-row mb-4 flex justify-center lg:justify-start">
-            <span className="guest-pill">{t.guestPlay}</span>
-          </div>
           <label className="mb-2 block text-left text-lg font-black" htmlFor="nick">{t.nick}</label>
           <input
             id="nick"
