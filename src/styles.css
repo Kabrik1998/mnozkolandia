@@ -40,6 +40,10 @@ body {
   .start-copy {
     justify-content: flex-start;
   }
+
+  .start-eyebrow {
+    transform: translateX(-10px);
+  }
 }
 
 .bg-game {
@@ -255,8 +259,7 @@ body {
   padding: 0.25rem;
 }
 
-.language-switch button,
-.auth-tab {
+.language-switch button {
   align-items: center;
   border: 0;
   border-radius: 999px;
@@ -274,62 +277,28 @@ body {
   min-width: 78px;
 }
 
-.language-switch button.is-active,
-.auth-tab.is-active {
+.language-switch button.is-active {
   background: #2cc7b8;
   color: white;
 }
 
-.auth-tab {
-  background: rgba(255, 255, 255, 0.72);
-  min-width: 112px;
-}
-
-.auth-tabs {
-  align-items: center;
+.guest-row {
   min-height: 48px;
 }
 
-.auth-tabs .auth-tab:first-child {
-  min-width: 176px;
-}
-
-.auth-slot {
-  min-height: 0;
-}
-
-.auth-panel {
+.guest-pill {
   align-items: center;
-  background: rgba(255, 255, 255, 0.62);
-  box-shadow: 0 18px 36px rgba(34, 74, 110, 0.16);
-  border-radius: 22px;
-  display: grid;
-  gap: 0.65rem;
-  grid-template-columns: 1fr 1fr auto;
-  margin-bottom: 1rem;
-  min-height: 118px;
-  padding: 0.85rem;
-  position: absolute;
-  left: 1rem;
-  right: 1rem;
-  top: 5.25rem;
-  z-index: 5;
-}
-
-.auth-panel small,
-.auth-panel p {
-  grid-column: 1 / -1;
-}
-
-.auth-input {
-  background: white;
-  border: 3px solid rgba(44, 199, 184, 0.22);
+  background: #2cc7b8;
   border-radius: 999px;
+  color: white;
+  display: inline-flex;
   font-weight: 900;
-  min-height: 44px;
-  outline: none;
-  padding: 0.55rem 0.9rem;
-  width: 100%;
+  justify-content: center;
+  line-height: 1;
+  min-height: 48px;
+  min-width: 176px;
+  padding: 0.65rem 1rem;
+  text-align: center;
 }
 
 .mode-icon {
@@ -783,20 +752,9 @@ body {
     min-width: 76px;
   }
 
-  .auth-tabs {
-    display: grid;
-    grid-template-columns: 1fr;
-    min-height: 142px;
-  }
-
-  .auth-tab,
-  .auth-tabs .auth-tab:first-child {
+  .guest-pill {
     min-width: 0;
     width: 100%;
-  }
-
-  .auth-slot {
-    min-height: 0;
   }
 
   .menu-heading {
@@ -831,13 +789,6 @@ body {
 
   .level-card strong {
     font-size: 1.55rem;
-  }
-
-  .auth-panel {
-    grid-template-columns: 1fr;
-    left: 0.8rem;
-    right: 0.8rem;
-    top: 10.5rem;
   }
 
   .mode-card strong {

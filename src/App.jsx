@@ -7,7 +7,7 @@ import Help from './screens/Help.jsx';
 import ModeMenu from './screens/ModeMenu.jsx';
 import Ranking from './screens/Ranking.jsx';
 import StartScreen from './screens/StartScreen.jsx';
-import { clearScores, loadScores, loginUser, registerUser, saveScore } from './utils/storage.js';
+import { clearScores, loadScores, saveScore } from './utils/storage.js';
 import { translations } from './utils/i18n.js';
 
 export default function App() {
@@ -16,13 +16,6 @@ export default function App() {
   const [error, setError] = useState('');
   const [scores, setScores] = useState(() => loadScores());
   const [lang, setLang] = useState(localStorage.getItem('mnozkolandia-lang') || 'pl');
-  const [user, setUser] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('mnozkolandia-current-user') || 'null');
-    } catch {
-      return null;
-    }
-  });
 
   const sortedScores = useMemo(() => [...scores].sort((a, b) => b.points - a.points), [scores]);
   const t = translations[lang] || translations.pl;
@@ -39,7 +32,7 @@ export default function App() {
   }
 
   function handleSave(score) {
-    setScores(saveScore(score, user));
+    setScores(saveScore(score));
   }
 
   function handleClear() {
@@ -60,34 +53,9 @@ export default function App() {
     setError('');
   }
 
-  function handleRegister(login, password) {
-    const result = registerUser(login.trim(), password);
-    if (!result.ok) return { ok: false, message: t.loginExists };
-    setUser(result.user);
-    setNick(result.user.login);
-    localStorage.setItem('mnozkolandia-current-user', JSON.stringify(result.user));
-    localStorage.setItem('mnozkolandia-nick', result.user.login);
-    return { ok: true };
-  }
-
-  function handleLogin(login, password) {
-    const result = loginUser(login.trim(), password);
-    if (!result.ok) return { ok: false, message: t.loginWrong };
-    setUser(result.user);
-    setNick(result.user.login);
-    localStorage.setItem('mnozkolandia-current-user', JSON.stringify(result.user));
-    localStorage.setItem('mnozkolandia-nick', result.user.login);
-    return { ok: true };
-  }
-
-  function logout() {
-    setUser(null);
-    localStorage.removeItem('mnozkolandia-current-user');
-  }
-
   return (
     <Shell>
-      {screen === 'start' && <StartScreen t={t} lang={lang} onLangChange={changeLang} user={user} onLogin={handleLogin} onRegister={handleRegister} onLogout={logout} nick={nick} setNick={setNick} error={error} onStart={start} onRanking={() => setScreen('ranking')} onHelp={() => setScreen('help')} />}
+      {screen === 'start' && <StartScreen t={t} lang={lang} onLangChange={changeLang} nick={nick} setNick={setNick} error={error} onStart={start} onRanking={() => setScreen('ranking')} onHelp={() => setScreen('help')} />}
       {screen === 'menu' && <ModeMenu t={t} nick={nick} onSelect={(id) => setScreen(id)} onChangeStudent={changeStudent} />}
       {screen === 'ranking' && <Ranking t={t} scores={sortedScores} onBack={() => setScreen(nick.trim() ? 'menu' : 'start')} onClear={handleClear} />}
       {screen === 'help' && <Help t={t} onBack={() => setScreen('start')} />}

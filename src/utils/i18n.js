@@ -60,14 +60,6 @@ const pl = {
   fallingHelp: 'Klikaj kulkę z poprawnym wynikiem. Runda trwa 120 sekund.',
   enterNickError: 'Wpisz nick przed rozpoczęciem gry.',
   guestPlay: 'Graj bez logowania',
-  login: 'Zaloguj',
-  register: 'Zarejestruj',
-  logout: 'Wyloguj',
-  password: 'Hasło',
-  loginExists: 'Taki login już istnieje.',
-  loginWrong: 'Login lub hasło nie pasuje.',
-  authHint: 'Konto działa lokalnie w tej przeglądarce.',
-  loggedAs: 'Zalogowano jako',
   modeDisplay(mode) {
     return String(mode)
       .replace('Szybkie mnożenie', this.quick)
@@ -139,14 +131,6 @@ const en = {
   fallingHelp: 'Click the ball with the correct answer. The round lasts 120 seconds.',
   enterNickError: 'Enter a nickname before starting.',
   guestPlay: 'Play without login',
-  login: 'Log in',
-  register: 'Register',
-  logout: 'Log out',
-  password: 'Password',
-  loginExists: 'This login already exists.',
-  loginWrong: 'Login or password does not match.',
-  authHint: 'The account works locally in this browser.',
-  loggedAs: 'Logged in as',
   modeDisplay(mode) {
     return String(mode)
       .replace('Szybkie mnożenie', this.quick)
@@ -158,4 +142,3 @@ const en = {
 };
 
 export const translations = { pl, en };
-
